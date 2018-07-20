@@ -1,0 +1,8 @@
+[Desktop Entry]
+Comment=Advanced Video Editor
+Terminal=false
+Name=Shotcut
+Exec=/opt/Shotcut.AppImage
+Type=Application
+Icon=image-missing
+Categories=AudioVideo

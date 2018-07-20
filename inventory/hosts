@@ -1,0 +1,6 @@
+[all:vars] 
+ansible_connection=ssh
+ansible_user=stfi
+
+[local]
+localhost ansible_connection=local

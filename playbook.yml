@@ -1,0 +1,328 @@
+---
+
+#Ansible script to install all the necessary software on my working notebook.
+#The notebook must have Lubuntu installed and the openssh server installed and running (sudo apt-get install openssh-server).
+#Then there must be a user stfi with my password and with sudoer rights (see inventory file to change user).
+#The notebook's IP address must be added to the file inventory/hosts, if the ansible script is not executed locally.
+#
+#To use this playbook the following software must be previously installed:
+#  sudo apt install ansible
+#  sudo apt install sshpass
+#Plus you might have to ssh into the notebook previous to running the playbook, if you execute it remote.
+
+- hosts: all
+  become: true
+
+  tasks:
+  
+  ##### deinstall unwanted software from the Lubuntu installation
+  
+  - name: Deinstall gnumeric
+    apt:
+      name: gnumeric
+      state: absent
+
+  - name: Deinstall abiword
+    apt:
+      name: abiword
+      state: absent
+
+
+  ##### install general software
+  
+  - name: install Libre Office
+    apt:
+      name: libreoffice
+      state: present
+
+  - name: install Alacarte main menu editor
+    apt:
+      name: alacarte
+      state: present
+
+  - name: install Calibre eBook manager
+    apt:
+      name: calibre
+      state: present
+
+  - name: Install Gimp
+    apt:
+      name: gimp
+      state: present
+
+  - name: Install VLC
+    apt:
+      name: vlc
+      state: present
+      
+  - name: Install restricted extras (codecs, fonts etc.)
+    apt:
+      name: lubuntu-restricted-extras
+      state: present
+
+  - name: Install arandr screen layout editor
+    apt:
+      name: arandr
+      state: present
+
+  - name: Install pdfmod PDF editor
+    apt:
+      name: pdfmod
+      state: present
+
+  - name: Install scribus desktop publishing
+    apt:
+      name: scribus
+      state: present
+      
+  - name: Install Font Manager (as replacement for the deprecated FontMatrix)
+    apt:
+      name: font-manager
+      state: present
+
+  - name: Install audacity audio editor
+    apt:
+      name: audacity
+      state: present
+   
+  - name: Install inkscape
+    apt:
+      name: inkscape
+      state: present
+
+  - name: copy OpenShot from github and make it executable
+    get_url:
+      url: https://github.com/OpenShot/openshot-qt/releases/download/v2.4.2/OpenShot-v2.4.2-x86_64.AppImage
+      dest: /opt/OpenShot-v2.4.0-x86_64.AppImage
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: create menu entry for OpenShot
+    copy:
+      src: files/openshot.desktop
+      dest: '/home/{{ ansible_user }}/.local/share/applications/'
+      owner: '{{ ansible_user }}'
+      group: '{{ ansible_user }}'
+      mode: 0777
+
+  - name: copy Shotcut from github and make it executable
+    get_url:
+      url: https://github.com/mltframework/shotcut/releases/download/v18.07/Shotcut-180702.glibc2.14-x86_64.AppImage
+      dest: /opt/Shotcut.AppImage
+      owner: root
+      group: root
+      mode: 0755
+
+  - name: create menu entry for Shotcut
+    copy:
+      src: files/shotcut.desktop
+      dest: '/home/{{ ansible_user }}/.local/share/applications/'
+      owner: '{{ ansible_user }}'
+      group: '{{ ansible_user }}'
+      mode: 0777
+
+  - name: Install Chromium web browser
+    apt:
+      name: chromium-browser
+      state: present
+
+  - name: Install Catfish search
+    apt:
+      name: catfish
+      state: present
+      
+  - name: Install Clipit clipboard manager
+    apt:
+      name: clipit
+      state: present
+
+  - name: Install Gnome Do application launcher
+    apt:
+      name: gnome-do
+      state: present
+
+  - name: Install gtkhash hash validator
+    apt:
+      name: gtkhash
+      state: present
+
+  - name: Install keepassx password manager
+    apt:
+      name: keepassx
+      state: present
+
+  - name: Install gnome-screenshot screenshot tool
+    apt:
+      name: gnome-screenshot
+      state: present
+
+  - name: Install solaar Logitech tool (for wireless Logitech mouse)
+    apt:
+      name: solaar
+      state: present
+
+  - name: Install VirtualBox
+    apt:
+      name: virtualbox-qt
+      state: present
+
+  - name: Install zim desktop wiki
+    apt:
+      name: zim
+      state: present
+
+  - name: Install thunderbird mail client
+    apt:
+      name: thunderbird
+      state: present
+
+  - name: Install librecad CAD
+    apt:
+      name: librecad
+      state: present
+
+  - name: Install dropbox
+    apt:
+      name: nautilus-dropbox
+      state: present
+
+  - name: Install filezilla ftp client
+    apt:
+      name: filezilla
+      state: present
+
+
+##### install software development tools
+
+  - name: Install scite
+    apt:
+      name: scite
+      state: present
+
+  - name: Install maven
+    apt:
+      name: maven
+      state: present
+      
+  - name: Install git
+    apt:
+      name: git
+      state: present
+ 
+  - name: Install git support for gnome keyring
+    apt:
+      name: libgnome-keyring-dev
+      state: present 
+
+  - name: build the credential manager
+    make:
+      chdir: /usr/share/doc/git/contrib/credential/gnome-keyring
+      
+  - name: point git to the newly created file in your config
+    git_config:
+      name: credential.helper
+      scope: global
+      value: /usr/share/doc/git/contrib/credential/gnome-keyring/git-credential-gnome-keyring
+  
+# if you need a specific node version, see https://stackoverflow.com/questions/16898001/how-to-install-a-specific-version-of-node-on-ubuntu#45726068
+#  - name: Install node
+#    apt:
+#      name: nodejs
+#      state: present
+  
+  - name: Install npm
+    apt:
+      name: npm
+      state: present
+
+  - name: Install gradle
+    apt:
+      name: gradle
+      state: present
+
+  - name: install yarn via npm
+    npm:
+      name: yarn
+      global: yes
+  
+  - name: Install docker
+    apt:
+      name: docker.io
+      state: present
+
+  - name: Install docker compose
+    apt:
+      name: docker-compose
+      state: present
+
+  - name: copy jdbc driver for sqlDeveloper (MS SQL)
+    get_url:
+      url: http://central.maven.org/maven2/net/sourceforge/jtds/jtds/1.2.8/jtds-1.2.8.jar
+      dest: /opt/sqldeveloper/jdbc/lib/
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: copy jdbc driver for sqlDeveloper (MySQL)
+    get_url:
+      url: http://central.maven.org/maven2/mysql/mysql-connector-java/5.1.45/mysql-connector-java-5.1.45.jar
+      dest: /opt/sqldeveloper/jdbc/lib/
+      owner: root
+      group: root
+      mode: 0644
+
+##### install system software
+
+  - name: Install exFAT file system for 128 GB SD-Card
+    apt:
+      name: exfat-fuse
+      state: present
+      
+  - name: Install exFAT file system for 128 GB SD-Card
+    apt:
+      name: exfat-utils
+      state: present
+      
+###### manual installation
+# projectlibre -> download deb file from sourceforge
+# portecle -> download zip from sourceforge
+# jd-gui -> download deb file from jd.benow.ca
+# skype -> download deb file from skype.com
+# visual sudio code -> download deb file from code.visualstudio.com
+# java 8 via webupd8team PPA
+# chrome via deb file from chrome download page
+# Touchpad Indicator - see http://ubuntuhandbook.org/index.php/2016/11/install-touchpad-indicator-in-ubuntu-16-04/
+
+
+##### system configuration changes
+
+  - name: add user to docker group (otherwise user lacks permissions for docker)
+    user:
+      name: '{{ ansible_user }}'
+      groups: docker
+      append: yes
+
+  - name: add user to audio group (otherwise music playback stops when PC is locked)
+    user:
+      name: '{{ ansible_user }}'
+      groups: audio
+      append: yes
+
+  - name: increase limit for inotify (needed by IntelliJ) -> https://confluence.jetbrains.com/display/IDEADEV/Inotify+Watches+Limit
+    lineinfile:
+      path: /etc/sysctl.conf
+      line: 'fs.inotify.max_user_watches = 524288'
+    
+  - name: add locale settings (per default the entry LANG="en_ZA.UTF-8" should already exist). This should fix, that the calendar starts with Monday and paper size is in A4 and cm is default.
+    blockinfile:
+      path: /etc/default/locale
+      block: |
+        LANGUAGE="en_ZA:en"
+        LC_TIME="en_ZA.UTF-8"
+        LC_PAPER="en_ZA.UTF-8"
+        LC_MEASUREMENT="en_ZA.UTF-8"
+
+
+##### TODOs
+# install fonts

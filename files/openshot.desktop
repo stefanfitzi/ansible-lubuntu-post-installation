@@ -1,0 +1,8 @@
+[Desktop Entry]
+Comment=Simple Video Editor
+Terminal=false
+Name=OpenShot
+Exec=/opt/OpenShot-v2.4.0-x86_64.AppImage
+Type=Application
+Icon=image-missing
+Categories=AudioVideo
