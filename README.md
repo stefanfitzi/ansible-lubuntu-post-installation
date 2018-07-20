@@ -1,5 +1,7 @@
 # ansible-lubuntu-post-installation
-Ansible script to automatically install all needed software and to fine tune some configuration on my new developer machine. The script is to be executed after a fresh Lubuntu installation.
+Ansible script to automatically install all needed software and to fine tune some configuration on my new developer machine. The script is to be executed after a fresh Lubuntu installation with the following command:
+	'''ansible-playbook playbook.yml -i inventory -bK
+(b: become, K: ask-become-pass)
 
 ## Instructions
 1. modify the inventory/hosts file:
