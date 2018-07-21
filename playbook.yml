@@ -105,6 +105,7 @@
       owner: '{{ ansible_user }}'
       group: '{{ ansible_user }}'
       mode: 0777
+# possible entries for lxde category in the desktop files -> see https://forum.lxde.org/viewtopic.php?t=36730
 
   - name: copy Shotcut from github and make it executable
     get_url:
@@ -145,6 +146,11 @@
   - name: Install gtkhash hash validator
     apt:
       name: gtkhash
+      state: present
+
+  - name: Install tasque task manager (RTM client)
+    apt:
+      name: tasque
       state: present
 
   - name: Install keepassx password manager
@@ -195,9 +201,14 @@
 
 ##### install software development tools
 
-  - name: Install scite
+  - name: Install scite editor
     apt:
       name: scite
+      state: present
+
+  - name: Install meld diff tool
+    apt:
+      name: meld
       state: present
 
   - name: Install maven
@@ -245,7 +256,12 @@
     npm:
       name: yarn
       global: yes
-  
+
+  - name: install jshint via npm
+    npm:
+      name: jshint
+      global: yes
+
   - name: Install docker
     apt:
       name: docker.io
@@ -323,6 +339,29 @@
         LC_PAPER="en_ZA.UTF-8"
         LC_MEASUREMENT="en_ZA.UTF-8"
 
+  - name: create menu entry for IntelliJ
+    copy:
+      src: files/intellij.desktop
+      dest: '/home/{{ ansible_user }}/.local/share/applications/'
+      owner: '{{ ansible_user }}'
+      group: '{{ ansible_user }}'
+      mode: 0777
+
+  - name: create menu entry for Portecle
+    copy:
+      src: files/portecle.desktop
+      dest: '/home/{{ ansible_user }}/.local/share/applications/'
+      owner: '{{ ansible_user }}'
+      group: '{{ ansible_user }}'
+      mode: 0777
+
+  - name: create menu entry for SqlDeveloper
+    copy:
+      src: files/sqldeveloper.desktop
+      dest: '/home/{{ ansible_user }}/.local/share/applications/'
+      owner: '{{ ansible_user }}'
+      group: '{{ ansible_user }}'
+      mode: 0777
 
 ##### TODOs
 # install fonts

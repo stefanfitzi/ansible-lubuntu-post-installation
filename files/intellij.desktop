@@ -1,0 +1,8 @@
+[Desktop Entry]
+Comment=Java IDE
+Terminal=false
+Name=IntelliJ
+Exec=/opt/intellij/bin/idea.sh
+Type=Application
+Icon=/opt/intellij/bin/idea.png
+Categories=Development

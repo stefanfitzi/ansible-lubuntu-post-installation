@@ -1,0 +1,8 @@
+[Desktop Entry]
+Comment=Database Client
+Terminal=false
+Name=SQL Developer
+Exec=/opt/sqldeveloper/sqldeveloper.sh
+Type=Application
+Icon=/opt/sqldeveloper/icon.png
+Categories=Development

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Comment=Java Keystore tool
+Terminal=false
+Name=Portecle
+Exec=java -jar /opt/portecle-1.11/portecle.jar
+Type=Application
+Icon=/opt/portecle-1.11/icons/32x32/portecle.png
+Categories=Development
